@@ -1,18 +1,26 @@
 package com.jhonny;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 public class App extends Application {
     @Override
-    public void start(Stage stage) {
-        var root = new Label("Hello, JavaFX + Maven!");
-        var scene = new Scene(root, 400, 200);
-        stage.setTitle("JavaFX Demo");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
+            Parent parent = loader.load();
+            Scene mainScene = new Scene(parent);
+            primaryStage.setScene(mainScene);
+            primaryStage.setTitle("Sample JavaFX application");
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
