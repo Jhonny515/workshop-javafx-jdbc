@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="500.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" >
+    <children>
+        <Label style="-fx-font-size: 22px;" text="About This Application">
+            <font>
+                <Font size="22" />
+            </font>
+        </Label>
+        <Separator />
+        <Label style="-fx-font-size: 14px;" text="JavaFX Workshop application featuring JDBC integration. Built as a hands-on educational demo.  © 2024 Workshop Team" wrapText="true" />
+    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>
