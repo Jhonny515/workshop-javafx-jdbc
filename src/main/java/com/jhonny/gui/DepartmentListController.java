@@ -1,11 +1,15 @@
 package com.jhonny.gui;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jhonny.model.entity.Department;
+import com.jhonny.model.services.DepartmentService;
 import com.jhonny.App;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
@@ -25,6 +29,10 @@ public class DepartmentListController implements Initializable {
     @FXML
     private Button buttonNew;
 
+    private ObservableList<Department> observableList = FXCollections.observableArrayList();
+
+    private DepartmentService service;
+
     @FXML
     public void onButtonNewAction() {
         System.out.println("onButtonNewAction");
@@ -33,6 +41,19 @@ public class DepartmentListController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeNodes();
+    }
+
+    public void setDepartmentService(DepartmentService service) {
+        this.service = service;
+    }
+
+    public void updateTableView() {
+        if (service == null) {
+            throw new IllegalStateException("Service was not set");
+        }
+        List<Department> list = service.findAll();
+        observableList.setAll(list);
+        tableViewDepartment.setItems(observableList);
     }
 
     private void initializeNodes() {
