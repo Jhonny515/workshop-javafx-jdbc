@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jhonny.App;
+import com.jhonny.gui.listeners.DataChangeListener;
 import com.jhonny.gui.util.Alerts;
 import com.jhonny.gui.util.Utils;
 import com.jhonny.model.entity.Department;
@@ -27,7 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class DepartmentListController implements Initializable {
+public class DepartmentListController implements Initializable, DataChangeListener {
 
     @FXML
     private TableView<Department> tableViewDepartment;
@@ -83,6 +84,7 @@ public class DepartmentListController implements Initializable {
             DepartmentFormController controller = loader.getController();
             controller.setDepartment(entity);
             controller.setDepartmentService(new DepartmentService());
+            controller.subscribeDataChangeListener(this);
             controller.updateFormData();
 
             Stage dialogStage = new Stage();
@@ -96,6 +98,11 @@ public class DepartmentListController implements Initializable {
             Alerts.showAlert("Error", "Error loading view", e.getMessage(), AlertType.ERROR);
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        updateTableView();
     }
 
 }

@@ -1,9 +1,12 @@
 package com.jhonny.gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jhonny.db.DbException;
+import com.jhonny.gui.listeners.DataChangeListener;
 import com.jhonny.gui.util.Alerts;
 import com.jhonny.gui.util.Constraints;
 import com.jhonny.gui.util.Utils;
@@ -28,6 +31,7 @@ public class DepartmentFormController implements Initializable {
     private TextField txtName;
     @FXML
     private Label labelErrorName;
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
     private Button btSave;
@@ -42,6 +46,10 @@ public class DepartmentFormController implements Initializable {
         this.service = service;
     }
 
+    public void subscribeDataChangeListener(DataChangeListener listener) {
+        dataChangeListeners.add(listener);
+    }
+
     @FXML
     public void onBtSaveAction(ActionEvent event) {
         if (entity == null) {
@@ -53,6 +61,7 @@ public class DepartmentFormController implements Initializable {
         try {
             entity = getFormData();
             service.saveOrUpdate(entity);
+            notifyDataChangeListeners();
             Utils.currentStage(event).close();
         } catch (DbException e) {
             Alerts.showAlert("Error", "Error saving object", e.getMessage(), AlertType.ERROR);
@@ -80,6 +89,12 @@ public class DepartmentFormController implements Initializable {
         }
         txtId.setText(String.valueOf(entity.getId()));
         txtName.setText(entity.getName());
+    }
+
+    private void notifyDataChangeListeners() {
+        for (DataChangeListener listener : dataChangeListeners) {
+            listener.onDataChanged();
+        }
     }
 
     public Department getFormData() {
