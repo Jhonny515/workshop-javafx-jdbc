@@ -3,7 +3,9 @@ package com.jhonny.gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.jhonny.db.DbException;
 import com.jhonny.gui.listeners.DataChangeListener;
@@ -11,6 +13,7 @@ import com.jhonny.gui.util.Alerts;
 import com.jhonny.gui.util.Constraints;
 import com.jhonny.gui.util.Utils;
 import com.jhonny.model.entity.Department;
+import com.jhonny.model.exceptions.ValidationException;
 import com.jhonny.model.services.DepartmentService;
 
 import javafx.event.ActionEvent;
@@ -65,6 +68,8 @@ public class DepartmentFormController implements Initializable {
             Utils.currentStage(event).close();
         } catch (DbException e) {
             Alerts.showAlert("Error", "Error saving object", e.getMessage(), AlertType.ERROR);
+        } catch (ValidationException e) {
+            setErrorMessages(e.getErrors());
         }
     }
     @FXML
@@ -98,8 +103,25 @@ public class DepartmentFormController implements Initializable {
     }
 
     public Department getFormData() {
+        ValidationException exception = new ValidationException("Validation error");
+        if (txtName.getText() == null || txtName.getText().trim().equals("")) {
+            exception.addError("name", "Field can't be empty");
+        }
+
         entity.setId(Utils.tryParseToInt(txtId.getText()));
         entity.setName(txtName.getText());
+        
+        if (exception.getErrors().size() > 0) {
+            throw exception;
+        }
+
         return entity;
+    }
+
+    private void setErrorMessages(Map<String, String> errors) {
+        Set<String> fields = errors.keySet();
+        if (fields.contains("name")) {
+            labelErrorName.setText(errors.get("name"));
+        }
     }
 }
