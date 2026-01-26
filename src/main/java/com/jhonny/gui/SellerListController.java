@@ -13,6 +13,7 @@ import com.jhonny.gui.listeners.DataChangeListener;
 import com.jhonny.gui.util.Alerts;
 import com.jhonny.gui.util.Utils;
 import com.jhonny.model.entity.Seller;
+import com.jhonny.model.services.DepartmentService;
 import com.jhonny.model.services.SellerService;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -106,7 +107,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 
             SellerFormController controller = loader.getController();
             controller.setSeller(entity);
-            controller.setSellerService(new SellerService());
+            controller.setServices(new SellerService(), new DepartmentService());
+            controller.loadAssociatedObjects();
             controller.subscribeDataChangeListener(this);
             controller.updateFormData();
 
