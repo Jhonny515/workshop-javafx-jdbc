@@ -63,7 +63,7 @@ public class SellerListController implements Initializable, DataChangeListener {
     public void onButtonNewAction(ActionEvent event) {
         Stage parentStage = Utils.currentStage(event);
         Seller obj = new Seller();
-        // createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);
+        createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);
     }
 
     @Override
@@ -99,29 +99,29 @@ public class SellerListController implements Initializable, DataChangeListener {
         tableViewSeller.prefHeightProperty().bind(stage.heightProperty().subtract(40));
     }
 
-    // private void createDialogForm(Seller entity, String absoluteName, Stage parentStage) {
-    //     try {
-    //         FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-    //         AnchorPane pane = loader.load();
+    private void createDialogForm(Seller entity, String absoluteName, Stage parentStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+            AnchorPane pane = loader.load();
 
-    //         SellerFormController controller = loader.getController();
-    //         controller.setSeller(entity);
-    //         controller.setSellerService(new SellerService());
-    //         controller.subscribeDataChangeListener(this);
-    //         controller.updateFormData();
+            SellerFormController controller = loader.getController();
+            controller.setSeller(entity);
+            controller.setSellerService(new SellerService());
+            controller.subscribeDataChangeListener(this);
+            controller.updateFormData();
 
-    //         Stage dialogStage = new Stage();
-    //         dialogStage.setTitle("Enter Seller Data");
-    //         dialogStage.setScene(new Scene(pane));
-    //         dialogStage.setResizable(false);
-    //         dialogStage.initOwner(parentStage);
-    //         dialogStage.initModality(Modality.WINDOW_MODAL);
-    //         dialogStage.showAndWait();
-    //     } catch (IOException e) {
-    //         Alerts.showAlert("Error", "Error loading view", e.getMessage(), AlertType.ERROR);
-    //         e.printStackTrace();
-    //     }
-    // }
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Enter Seller Data");
+            dialogStage.setScene(new Scene(pane));
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(parentStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            Alerts.showAlert("Error", "Error loading view", e.getMessage(), AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onDataChanged() {
@@ -141,10 +141,9 @@ public class SellerListController implements Initializable, DataChangeListener {
                     return;
                 }
                 setGraphic(button);
-                // button.setOnAction(
-                        // event -> createDialogForm(
-                                // obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
-                                // null);
+                button.setOnAction(
+                        event -> createDialogForm(
+                                obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
             }
         });
     }
